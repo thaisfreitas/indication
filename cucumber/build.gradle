@@ -8,7 +8,7 @@ repositories {
 dependencies {
 
     testCompile 'info.cukes:cucumber-java:1.1.5'
-    testCompile 'info.cukes:cucumber-core:1.1.5'
+    compile 'info.cukes:cucumber-core:1.1.5'
     testCompile 'info.cukes:cucumber-junit:1.1.5'
     testCompile 'info.cukes:cucumber-picocontainer:1.1.5'
 
@@ -19,13 +19,29 @@ dependencies {
     testCompile 'com.jayway.restassured:rest-assured:2.4.1'
 }
 
+configurations {
+    cucumberRuntime {
+        extendsFrom testCompile
+    }
+}
+
+sourceSets {
+    test {
+        java {
+            srcDir 'src/main/api'
+        }
+    }
+}
+
 task apiTest {
-//    dependsOn testClasses
+    dependsOn testClasses
 
     doFirst {
         javaexec {
             main = "cucumber.api.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args += [ '-f', 'html:build/reports/cucumber', '-g', 'uk.co.filmtrader', 'src/main/api/indication']
+
         }
     }
 }

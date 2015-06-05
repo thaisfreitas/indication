@@ -25,7 +25,7 @@ public class IndicationsSteps {
 
     @Then("^The system should return a success message$")
     public void The_system_should_return_a_success_message() throws Throwable {
-        response.then().statusCode(200);
+        response.then().statusCode(201);
     }
 
 }
