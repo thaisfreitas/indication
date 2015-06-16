@@ -12,8 +12,8 @@ public class TestPreparation {
     public void setUp() throws UnknownHostException {
         RestAssured.reset();
 
-//        RestAssured.baseURI = "http://localhost";
-        RestAssured.baseURI = "http://www.google.com";
+        RestAssured.baseURI = "http://localhost";
+//        RestAssured.baseURI = "http://www.google.com";
         RestAssured.port = Integer.parseInt("8080");
         RestAssured.defaultParser = Parser.JSON;
     }

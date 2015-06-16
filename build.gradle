@@ -10,6 +10,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'jetty'
 
 jar {
     baseName = 'gs-spring-boot'
@@ -24,20 +25,42 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 dependencies {
-    // tag::jetty[]
+
+
+    testCompile 'info.cukes:cucumber-java:1.1.5'
+    testCompile 'info.cukes:cucumber-core:1.1.5'
+    testCompile 'info.cukes:cucumber-junit:1.1.5'
+    testCompile 'info.cukes:cucumber-picocontainer:1.1.5'
+
     compile("org.springframework.boot:spring-boot-starter-web") {
         exclude module: "spring-boot-starter-tomcat"
     }
-    compile 'org.springframework.boot:spring-boot-starter-web:1.2.3.RELEASE'
     compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework.boot:spring-boot-starter-logging")
 
     compile("org.springframework.boot:spring-boot-starter-jetty")
-    // end::jetty[]
-    // tag::actuator[]
+
+    compile("org.springframework.boot:spring-boot-starter-web:1.2.4.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter-jetty:1.2.4.RELEASE")
+
     compile("org.springframework.boot:spring-boot-starter-actuator")
-    // end::actuator[]
+
     testCompile("junit:junit")
+
+
+    compile 'com.jayway.restassured:json-path:2.4.1'
+    compile 'com.jayway.restassured:xml-path:2.4.1'
+
+    testCompile 'com.jayway.restassured:json-schema-validator:2.4.1'
+    testCompile 'com.jayway.restassured:rest-assured:2.4.1'
+
+}
+
+task cucumber(type:JavaExec) {
+    main = 'cucumber.api.cli.Main'
+    classpath = sourceSets.test.compileClasspath + sourceSets.test.output
+    args = ['--glue', 'indication.steps','src/test/java/indication']
+
 }
 
 task wrapper(type: Wrapper) {
